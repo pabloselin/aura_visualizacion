@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-import TaxLayer from "./TaxLayer";
 import Graph from "./Graph";
 import styled from "styled-components";
-import config from "./config";
+import config from "../config";
 
 const GraphWrapper = styled.div`
 	font-family: "Josefin Sans", sans-serif;

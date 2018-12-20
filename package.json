@@ -2,28 +2,33 @@
   "name": "aura_visualizacion",
   "version": "1.0.0",
   "description": "Visualización Taxonomías Aura Austral",
-  "main": "index.js",
   "license": "MIT",
+  "private": true,
+  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
-    "watch": "parcel watch index.html"
+    "watch": "parcel watch index.html",
+    "webpackstart": "webpack --mode development",
+    "webpackbuild": "webpack --mode production"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "config": "^3.0.0",
-    "config.js": "^0.1.0",
-    "config.json": "^0.0.4",
-    "konva": "^2.5.1",
-    "react": "^16.6.3",
+    "react": "16.6.3",
     "react-cytoscape": "^1.0.6",
-    "react-dom": "^16.6.3",
-    "react-konva": "^16.6.31",
+    "react-dom": "16.6.3",
     "styled-components": "^4.1.3"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "parcel-bundler": "^1.10.3"
+    "html-webpack-plugin": "^3.2.0",
+    "parcel-bundler": "^1.10.3",
+    "webpack": "^4.28.0",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.1.2"
   }
 }

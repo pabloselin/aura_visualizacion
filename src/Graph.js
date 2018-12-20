@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ReactCytoscape, cytoscape } from "react-cytoscape";
+import { ReactCytoscape } from "react-cytoscape";
 
 class Graph extends Component {
 	constructor(props) {
