@@ -32,6 +32,21 @@ const GraphWrapper = styled.div`
 	}
 `;
 
+const TaxLabel = styled.div`
+	position: absolute;
+	left: 12px;
+	bottom: 0;
+	font-size: 60px;
+	z-index: 3;
+	text-align: center;
+	.label {
+		color: white;
+		text-transform: uppercase;
+		transform: rotate(-90deg);
+		transform-origin: 0 0;
+	}
+`;
+
 const ActiveNodeZone = styled.div`
 	position: absolute;
 	top: 0;
@@ -123,6 +138,14 @@ const graphStyle = [
 		}
 	},
 	{
+		selector: "edge.hover",
+		style: {
+			width: "1px",
+			"line-style": "solid",
+			color: "white"
+		}
+	},
+	{
 		selector: "node.selected",
 		style: {
 			"background-color": "#333",
@@ -145,7 +168,8 @@ const graphStyle = [
 			"border-color": "white",
 			width: "32px",
 			height: "32px",
-			label: "data(name)"
+			label: "data(name)",
+			cursoe: "pointer"
 		}
 	},
 	{
@@ -252,7 +276,7 @@ class App extends Component {
 			neighbors.addClass("hover");
 		});
 		cy.on("mouseout", "node", function(evt) {
-			cy.elements("node").removeClass("hover");
+			cy.elements("node, edge").removeClass("hover");
 		});
 	}
 
@@ -269,7 +293,7 @@ class App extends Component {
 				padding: 10,
 				nodeDimensionsIncludeLabels: false
 			}
-		})
+		});
 	}
 
 	handleEval() {
@@ -362,6 +386,9 @@ class App extends Component {
 						5
 					</div>
 				</LayoutSwitcher>
+				<TaxLabel>
+					<div className="label">{this.state.curtax}</div>
+				</TaxLabel>
 			</GraphWrapper>
 		) : (
 			<div className="loading">Cargando</div>

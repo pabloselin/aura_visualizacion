@@ -5,6 +5,10 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	entry: "./src/index.js",
+	devtool: '',
+	devServer: {
+		contentBase: './dist'
+	},
 	module: {
 		rules: [
 			{
