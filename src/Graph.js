@@ -14,7 +14,7 @@ class Graph extends Component {
 					cyRef={this.props.cyRef}
 					cytoscapeOptions={{
 						wheelSensitivity: 0.2,
-						minZoom: 0.9,
+						minZoom: 0.7,
 						maxZoom: 1.4,
 						animationEasing: "ease-in",
 						animationDuration: 500

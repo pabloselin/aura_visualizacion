@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import MediaQuery from "react-responsive";
 import Graph from "./Graph";
 import styled from "styled-components";
 import config from "../config";
@@ -35,7 +36,7 @@ const GraphWrapper = styled.div`
 const TaxLabel = styled.div`
 	position: absolute;
 	left: 12px;
-	bottom: 0;
+	bottom: 24px;
 	font-size: 60px;
 	z-index: 3;
 	text-align: center;
@@ -44,6 +45,9 @@ const TaxLabel = styled.div`
 		text-transform: uppercase;
 		transform: rotate(-90deg);
 		transform-origin: 0 0;
+	}
+	@media screen and (max-width: 768px) {
+		font-size: 18px;
 	}
 `;
 
@@ -71,33 +75,146 @@ const ActiveNodeZone = styled.div`
 	}
 `;
 
-const TaxSwitcher = styled.div`
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 2;
-	.tax {
-		cursor: pointer;
-		color: white;
-		display: inline-block;
-		padding: 4px;
+const TaxSwitcherDesktop = styled.div`
+	.taxswitcherlist {
+		position: absolute;
+		bottom: 12px;
+		right: 0;
+		z-index: 2;
+		.tax {
+			cursor: pointer;
+			color: white;
+			display: inline-block;
+			padding: 4px;
+		}
+		.active,
+		.tax:hover {
+			font-weight: bold;
+			background-color: white;
+			color: #000;
+		}
 	}
-	.active {
-		font-weight: bold;
-		background-color: #555;
+`;
+
+const TaxSwitcherMobile = styled.div`	
+		.wrapper {
+			width: 100%;
+			height: 100vh;
+			position: absolute;
+			z-index: 10;
+			background-color: rgba(0, 0, 0, 0.6);
+			top: 0;
+			.taxswitcherlist {
+				padding: 32px;
+				.tax {
+			cursor: pointer;
+			color: white;
+			display: block;
+			padding: 4px;
+			font-size: 24px;
+			text-align: center;
+		}
+		.active,
+		.tax:hover {
+			font-weight: bold;
+			background-color: white;
+			color: #000;
+		}
+			}
+		}
+		p {
+			color: white;
+			text-align: center;
+			font-size: 24px;
+			padding: 6px;
+			margin: 12px auto;
+			border: 1px solid white;
+			border-radius: 4px;
+			max-width: 160px;
+		}
 	}
 `;
 
 const LayoutSwitcher = styled.div`
 	position: absolute;
-	top: 0;
+	bottom: 0;
 	left: 0;
 	color: white;
-	z-index: 2;
-	display: none;
+	z-index: 4;
+	.switcher {
+		cursor: pointer;
+		display: inline-block;
+		padding: 6px;
+		background-color: #333;
+		margin: 6px;
+		&.active {
+			background-color: white;
+			color: #333;
+		}
+	}
 `;
 
+const Horizonte = styled.div`
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-top: 2px solid white;
+	border-radius: 50%;
+	min-height: 90px;
+	z-index: 3;
+`;
+
+const Menumobile = styled.div`
+	color: white;
+	font-family: "Josefin Sans";
+	text-align: center;
+	padding-top: 32px;
+	font-size: 32px;
+`;
+
+//Other Layouts
+
+const layouts = {
+	random: {
+		name: "random",
+		fit: true,
+		circle: true,
+		padding: 10,
+		nodeDimensionsIncludeLabels: false
+	},
+	grid: {
+		name: "grid",
+		fit: true,
+		padding: 10,
+		nodeDimensionsIncludeLabels: false
+	},
+	breadthfirst: {
+		name: "breadthfirst",
+		fit: true,
+		circle: true,
+		padding: 10,
+		nodeDimensionsIncludeLabels: true
+	},
+	cose: {
+		name: "cose",
+		fit: true,
+		circle: true,
+		padding: 10,
+		nodeDimensionsIncludeLabels: true
+	},
+	concentric: {
+		name: "concentric",
+		fit: true,
+		circle: true,
+		padding: 10,
+		nodeDimensionsIncludeLabels: false
+	}
+};
+
 //Graph Style Array NOT Styled component
+
+const nodeColor = "#fff";
 
 const graphStyle = [
 	{
@@ -109,75 +226,93 @@ const graphStyle = [
 	{
 		selector: "node",
 		style: {
-			"background-color": "white",
-			"font-family": "Josefin Sans",
-			"font-weight": 400,
-			width: "16px",
-			height: "16px",
-			"font-size": "13px",
-			color: "white",
+			"background-color": nodeColor,
+			"font-family": "Arial, Helvetica, sans-serif",
+			"font-weight": 300,
+			width: "12px",
+			height: "12px",
+			"font-size": "12px",
+			color: nodeColor,
 			"text-max-width": "260px",
 			"text-wrap": "wrap",
-			"text-background-color": "#000",
+			"text-background-color": "black",
 			"text-background-opacity": 1,
-			//"text-background-padding": "12px",
-			"text-background-shape": "roundrectangle",
-			"text-valign": "bottom",
+			"text-background-padding": "2px",
+			"text-background-shape": "rectangle",
+			"text-valign": "middle",
 			"transition-property": "background-color"
 		}
 	},
 	{
 		selector: "edge",
 		style: {
-			//display: "none",
-			width: "0.5px",
+			width: "0",
 			color: "rgba(255,255,255, 0.6)",
 			"line-style": "dashed",
-			"line-color": "white",
-			"line-dash-pattern": [6, 10]
+			"line-color": nodeColor,
+			"line-dash-pattern": [6, 10],
+			"curve-style": "unbundled-bezier",
+			"control-point-distances": 120,
+			"control-point-weights": 0.1
 		}
 	},
 	{
 		selector: "edge.hover",
 		style: {
-			width: "1px",
-			"line-style": "solid",
-			color: "white"
+			width: "0.5px",
+			"line-style": "dashed",
+			color: nodeColor
 		}
 	},
 	{
 		selector: "node.selected",
 		style: {
 			"background-color": "#333",
-			"border-color": "white"
+			"border-color": nodeColor
 		}
 	},
 	{
 		selector: "node.hover",
 		style: {
 			"background-color": "#333",
-			"border-color": "white"
+			"border-color": nodeColor
 		}
 	},
 	{
 		selector: "node.articulo",
 		style: {
-			"background-color": "black",
+			"background-color": nodeColor,
 			"background-image": "data(img)",
 			"border-width": "1px",
-			"border-color": "white",
+			"border-color": nodeColor,
 			width: "32px",
 			height: "32px",
+			shape: "point"
+		}
+	},
+	{
+		selector: "node.articulo.hover",
+		style: {
+			label: "data(name)"
+		}
+	},
+	{
+		selector: "node.term",
+		style: {
 			label: "data(name)",
-			cursoe: "pointer"
+			"text-max-width": "120px",
+			"text-wrap": "ellipsis",
+			"text-valign": "bottom",
+			"text-halign": "center",
+			"text-margin-y": "0"
 		}
 	},
 	{
 		selector: "node.term.hover",
 		style: {
-			label: "data(name)",
 			"border-width": "1px",
-			"border-color": "white"
+			"border-color": nodeColor,
+			"text-wrap": "none"
 		}
 	}
 ];
@@ -201,13 +336,8 @@ class App extends Component {
 			],
 			curtax: "lugares",
 			articles: null,
-			curlayout: {
-				name: "breadthfirst",
-				fit: true,
-				circle: true,
-				padding: 10,
-				nodeDimensionsIncludeLabels: false
-			}
+			curlayout: layouts.random,
+			mobileswitcher: false
 		};
 
 		this.switchTax = this.switchTax.bind(this);
@@ -215,21 +345,32 @@ class App extends Component {
 
 	componentDidMount() {
 		this.getData();
+		console.log(this.props);
 	}
 
 	getData() {
-		let url = `${config.dev.base_url + config.dev.api_url}taxtree`;
+		let url;
+		if (process.env.NODE_ENV === "production") {
+			url = `${this.props.url}/${config.production.api_url}taxtree`;
+		} else {
+			url = `${this.props.url}/${config.dev.api_url}taxtree`;
+		}
+
 		console.log(url);
 		axios.get(url).then(response => {
 			this.setState({
 				data: response.data,
-				curdata: response.data.azul
+				curdata: response.data[this.props.edicion]
 			});
 		});
 	}
 
 	switchTax(taxonomy) {
-		this.setState({ curtax: taxonomy });
+		this.setState({ curtax: taxonomy, mobileswitcher: !this.state.mobileswitcher });
+	}
+
+	toggleTaxSwitch() {
+		this.setState({mobileswitcher: !this.state.mobileswitcher})
 	}
 
 	cyRef(cy) {
@@ -266,7 +407,7 @@ class App extends Component {
 				window.location.href = node.data().link;
 			}
 		});
-		cy.on("mouseover", "node", function(evt) {
+		cy.on("mouseover, taphold", "node", function(evt) {
 			cy.elements("node").removeClass("hover");
 			let node = evt.target;
 			node.addClass("hover");
@@ -275,7 +416,7 @@ class App extends Component {
 				.closedNeighborhood();
 			neighbors.addClass("hover");
 		});
-		cy.on("mouseout", "node", function(evt) {
+		cy.on("mouseout, tapend", "node", function(evt) {
 			cy.elements("node, edge").removeClass("hover");
 		});
 	}
@@ -285,14 +426,9 @@ class App extends Component {
 	}
 
 	switchLayout(layout) {
+		console.log(layout);
 		this.setState({
-			curlayout: {
-				name: "grid",
-				fit: true,
-				circle: true,
-				padding: 10,
-				nodeDimensionsIncludeLabels: false
-			}
+			curlayout: layout
 		});
 	}
 
@@ -319,6 +455,22 @@ class App extends Component {
 	}
 
 	render() {
+		const taxswitcher = (
+			<div className="taxswitcherlist">
+				{this.state.taxonomies.map(taxonomy => (
+					<div
+						className={
+							this.state.curtax === taxonomy
+								? "tax active"
+								: "tax default"
+						}
+						onClick={() => this.switchTax(taxonomy)}
+					>
+						{taxonomy}
+					</div>
+				))}
+			</div>
+		);
 		return this.state.data !== null ? (
 			<GraphWrapper>
 				<Graph
@@ -330,65 +482,43 @@ class App extends Component {
 					graphStyle={graphStyle}
 					layout={this.state.curlayout}
 				/>
-				<TaxSwitcher>
-					{this.state.taxonomies.map(taxonomy => (
-						<div
-							className={
-								this.state.curtax === taxonomy
-									? "tax active"
-									: "tax default"
-							}
-							onClick={() => this.switchTax(taxonomy)}
-						>
-							{taxonomy}
-						</div>
-					))}
-				</TaxSwitcher>
-				{this.state.articles !== null ? (
-					<ActiveNodeZone>
-						<h1>Articles</h1>
-						{this.state.articles.map((article, key) => (
-							<h2 key={key}>
-								<a href={article.link}>{article.title}</a>
-							</h2>
+				<MediaQuery query="(min-device-width: 1024px)">
+					<LayoutSwitcher>
+						{Object.keys(layouts).map((layout, index) => (
+							<div
+								className={
+									this.state.curlayout.name ===
+									layouts[layout].name
+										? "switcher active"
+										: "switcher"
+								}
+								onClick={() =>
+									this.switchLayout(layouts[layout])
+								}
+							>
+								{layouts[layout].name}
+							</div>
 						))}
-					</ActiveNodeZone>
+					</LayoutSwitcher>
+				</MediaQuery>
+				<Horizonte>
+					<TaxLabel>
+						<div className="label">{this.state.curtax}</div>
+					</TaxLabel>
+					<MediaQuery query="(min-device-width: 1024px)">
+						<TaxSwitcherDesktop>{taxswitcher}</TaxSwitcherDesktop>
+					</MediaQuery>
+					<MediaQuery query="(max-width: 1023px)">
+						<Menumobile onClick={() => this.toggleTaxSwitch()}>
+							+
+						</Menumobile>
+					</MediaQuery>
+				</Horizonte>
+				{this.state.mobileswitcher === true ? (
+					<TaxSwitcherMobile>
+						<div className="wrapper">{taxswitcher} <p onClick={() => this.toggleTaxSwitch()}>Cerrar</p></div>
+					</TaxSwitcherMobile>
 				) : null}
-				<LayoutSwitcher>
-					<div
-						className="switch-1"
-						onClick={() => this.switchLayout("grid")}
-					>
-						1
-					</div>
-					<div
-						className="switch-2"
-						onClick={() => this.switchLayout("circle")}
-					>
-						2
-					</div>
-					<div
-						className="switch-3"
-						onClick={() => this.switchLayout("random")}
-					>
-						3
-					</div>
-					<div
-						className="switch-4"
-						onClick={() => this.switchLayout("breadthfirst")}
-					>
-						4
-					</div>
-					<div
-						className="switch-5"
-						onClick={() => this.switchLayout("concentric")}
-					>
-						5
-					</div>
-				</LayoutSwitcher>
-				<TaxLabel>
-					<div className="label">{this.state.curtax}</div>
-				</TaxLabel>
 			</GraphWrapper>
 		) : (
 			<div className="loading">Cargando</div>
