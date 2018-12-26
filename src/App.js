@@ -122,7 +122,7 @@ const TaxSwitcherMobile = styled.div`
 		}
 			}
 		}
-		p {
+		p.closebtn {
 			color: white;
 			text-align: center;
 			font-size: 24px;
@@ -156,21 +156,34 @@ const LayoutSwitcher = styled.div`
 
 const Horizonte = styled.div`
 	position: absolute;
-	bottom: 0;
+	bottom: -45px;
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0.7);
 	border-top: 2px solid white;
 	border-radius: 50%;
-	min-height: 90px;
+	height: 135px;
 	z-index: 3;
 `;
 
 const Menumobile = styled.div`
-	color: white;
-	font-family: "Josefin Sans";
 	text-align: center;
-	padding-top: 32px;
-	font-size: 32px;
+	position: absolute;
+	bottom: 45px;
+	width: 100%;
+	span.plusSign {
+		margin: 0 auto;
+		font-size: 32px;
+		display: block;
+		width: 60px;
+		padding: 12px;
+		display: block;
+		color: white;
+		font-family: "Josefin Sans";
+		border-width: 1px 1px 0 1px;
+		border-color: white;
+		border-style: solid;
+		border-radius: 6px;
+	}
 `;
 
 //Other Layouts
@@ -366,11 +379,11 @@ class App extends Component {
 	}
 
 	switchTax(taxonomy) {
-		this.setState({ curtax: taxonomy, mobileswitcher: !this.state.mobileswitcher });
+		this.setState({ curtax: taxonomy, mobileswitcher: false });
 	}
 
 	toggleTaxSwitch() {
-		this.setState({mobileswitcher: !this.state.mobileswitcher})
+		this.setState({ mobileswitcher: !this.state.mobileswitcher });
 	}
 
 	cyRef(cy) {
@@ -407,7 +420,7 @@ class App extends Component {
 				window.location.href = node.data().link;
 			}
 		});
-		cy.on("mouseover, taphold", "node", function(evt) {
+		cy.on("mouseover", "node", function(evt) {
 			cy.elements("node").removeClass("hover");
 			let node = evt.target;
 			node.addClass("hover");
@@ -416,7 +429,19 @@ class App extends Component {
 				.closedNeighborhood();
 			neighbors.addClass("hover");
 		});
-		cy.on("mouseout, tapend", "node", function(evt) {
+		cy.on("taphold", "node", function(evt) {
+			cy.elements("node").removeClass("hover");
+			let node = evt.target;
+			node.addClass("hover");
+			let neighbors = cy
+				.elements("node#" + node.id())
+				.closedNeighborhood();
+			neighbors.addClass("hover");
+		});
+		cy.on("mouseout", "node", function(evt) {
+			cy.elements("node, edge").removeClass("hover");
+		});
+		cy.on("tapend", "node", function(evt) {
 			cy.elements("node, edge").removeClass("hover");
 		});
 	}
@@ -510,13 +535,22 @@ class App extends Component {
 					</MediaQuery>
 					<MediaQuery query="(max-width: 1023px)">
 						<Menumobile onClick={() => this.toggleTaxSwitch()}>
-							+
+							<span className="plusSign">+</span>
 						</Menumobile>
 					</MediaQuery>
 				</Horizonte>
 				{this.state.mobileswitcher === true ? (
 					<TaxSwitcherMobile>
-						<div className="wrapper">{taxswitcher} <p onClick={() => this.toggleTaxSwitch()}>Cerrar</p></div>
+						<div className="wrapper">
+							{taxswitcher}{" "}
+							<p
+								className="closebtn"
+								onClick={() => this.toggleTaxSwitch()}
+							>
+								Cerrar
+							</p>
+							<p className="help" />
+						</div>
 					</TaxSwitcherMobile>
 				) : null}
 			</GraphWrapper>
