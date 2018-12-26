@@ -48,6 +48,7 @@ const TaxLabel = styled.div`
 	}
 	@media screen and (max-width: 768px) {
 		font-size: 18px;
+		bottom: 48px;
 	}
 `;
 
@@ -175,14 +176,14 @@ const Menumobile = styled.div`
 		font-size: 32px;
 		display: block;
 		width: 60px;
-		padding: 12px;
+		padding: 3px 24px;
 		display: block;
 		color: white;
 		font-family: "Josefin Sans";
 		border-width: 1px 1px 0 1px;
 		border-color: white;
 		border-style: solid;
-		border-radius: 6px;
+		border-radius: 6px 6px 0 0;
 	}
 `;
 
