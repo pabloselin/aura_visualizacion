@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import axios from "axios";
 import MediaQuery from "react-responsive";
 import Graph from "./Graph";
+import TaxLabel from "./components/TaxLabel";
 import styled from "styled-components";
 import config from "../config";
+import layouts from "./layouts";
 
 const GraphWrapper = styled.div`
 	font-family: "Josefin Sans", sans-serif;
-	min-height: 100vh;
-	min-width: 100%;
+	height: 100vh;
+	width: 100%;
+	overflow: hidden;
 	background-color: transparent;
 	background-image: url(https://auraaustral.cl/wp-content/uploads/2018/09/20160607_104046-1920x1080.jpg);
 	background-size: cover;
@@ -23,64 +26,26 @@ const GraphWrapper = styled.div`
 		height: 100%;
 		z-index: 1;
 	}
-	.graph {
-		min-height: 90vh;
-		min-width: 100%;
+	#cy {
+		height: 90vh;
+		width: 100%;
 		position: absolute;
 		top: 0;
 		left: 0;
 		z-index: 2;
 	}
-`;
-
-const TaxLabel = styled.div`
-	position: absolute;
-	left: 12px;
-	bottom: 24px;
-	font-size: 60px;
-	z-index: 3;
-	text-align: center;
-	.label {
-		color: white;
-		text-transform: uppercase;
-		transform: rotate(-90deg);
-		transform-origin: 0 0;
-	}
-	@media screen and (max-width: 768px) {
-		font-size: 18px;
-		bottom: 48px;
-	}
-`;
-
-const ActiveNodeZone = styled.div`
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 3;
-	color: white;
-	padding: 12px;
-
-	h1 {
-		font-size: 18px;
-		font-weight: normal;
-	}
-
-	h2 {
-		font-size: 14px;
-		font-weight: normal;
-	}
-
-	a {
-		color: white;
-		text-decoration: none;
+	.__________cytoscape_container {
+		height: 100vh;
+		width: 100%;
+		z-index: 2;
 	}
 `;
 
 const TaxSwitcherDesktop = styled.div`
 	.taxswitcherlist {
 		position: absolute;
-		bottom: 12px;
-		right: 0;
+		bottom: 60px;
+		right: 24px;
 		z-index: 2;
 		.tax {
 			cursor: pointer;
@@ -187,150 +152,6 @@ const Menumobile = styled.div`
 	}
 `;
 
-//Other Layouts
-
-const layouts = {
-	random: {
-		name: "random",
-		fit: true,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: false
-	},
-	grid: {
-		name: "grid",
-		fit: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: false
-	},
-	breadthfirst: {
-		name: "breadthfirst",
-		fit: true,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: true
-	},
-	cose: {
-		name: "cose",
-		fit: true,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: true
-	},
-	concentric: {
-		name: "concentric",
-		fit: true,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: false
-	}
-};
-
-//Graph Style Array NOT Styled component
-
-const nodeColor = "#fff";
-
-const graphStyle = [
-	{
-		selector: "*",
-		style: {
-			opacity: 0
-		}
-	},
-	{
-		selector: "node",
-		style: {
-			"background-color": nodeColor,
-			"font-family": "Arial, Helvetica, sans-serif",
-			"font-weight": 300,
-			width: "12px",
-			height: "12px",
-			"font-size": "12px",
-			color: nodeColor,
-			"text-max-width": "260px",
-			"text-wrap": "wrap",
-			"text-background-color": "black",
-			"text-background-opacity": 1,
-			"text-background-padding": "2px",
-			"text-background-shape": "rectangle",
-			"text-valign": "middle",
-			"transition-property": "background-color"
-		}
-	},
-	{
-		selector: "edge",
-		style: {
-			width: "0",
-			color: "rgba(255,255,255, 0.6)",
-			"line-style": "dashed",
-			"line-color": nodeColor,
-			"line-dash-pattern": [6, 10],
-			"curve-style": "unbundled-bezier",
-			"control-point-distances": 120,
-			"control-point-weights": 0.1
-		}
-	},
-	{
-		selector: "edge.hover",
-		style: {
-			width: "0.5px",
-			"line-style": "dashed",
-			color: nodeColor
-		}
-	},
-	{
-		selector: "node.selected",
-		style: {
-			"background-color": "#333",
-			"border-color": nodeColor
-		}
-	},
-	{
-		selector: "node.hover",
-		style: {
-			"background-color": "#333",
-			"border-color": nodeColor
-		}
-	},
-	{
-		selector: "node.articulo",
-		style: {
-			"background-color": nodeColor,
-			"background-image": "data(img)",
-			"border-width": "1px",
-			"border-color": nodeColor,
-			width: "32px",
-			height: "32px",
-			shape: "point"
-		}
-	},
-	{
-		selector: "node.articulo.hover",
-		style: {
-			label: "data(name)"
-		}
-	},
-	{
-		selector: "node.term",
-		style: {
-			label: "data(name)",
-			"text-max-width": "120px",
-			"text-wrap": "ellipsis",
-			"text-valign": "bottom",
-			"text-halign": "center",
-			"text-margin-y": "0"
-		}
-	},
-	{
-		selector: "node.term.hover",
-		style: {
-			"border-width": "1px",
-			"border-color": nodeColor,
-			"text-wrap": "none"
-		}
-	}
-];
-
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -359,7 +180,6 @@ class App extends Component {
 
 	componentDidMount() {
 		this.getData();
-		console.log(this.props);
 	}
 
 	getData() {
@@ -369,8 +189,6 @@ class App extends Component {
 		} else {
 			url = `${this.props.url}/${config.dev.api_url}taxtree`;
 		}
-
-		console.log(url);
 		axios.get(url).then(response => {
 			this.setState({
 				data: response.data,
@@ -387,81 +205,15 @@ class App extends Component {
 		this.setState({ mobileswitcher: !this.state.mobileswitcher });
 	}
 
-	cyRef(cy) {
-		this.cy = cy;
-		cy.elements("*")
-			.animate({
-				// you can create a collection with edges and nodes for this
-				style: { opacity: 0 },
-				duration: 200,
-				easing: "ease-in-sine"
-			})
-			.delay(200)
-			.animate({
-				style: { opacity: 0.2 },
-				duration: 200,
-				easing: "ease-in-sine"
-			})
-			.delay(0)
-			.animate({
-				style: { opacity: 1 },
-				duration: 200,
-				easing: "ease-in-sine"
-			});
-		let articulos = cy.elements('node[type="articulo"]');
-		let ediciones = cy.elements('node[type="edicion"]');
-		let terms = cy.elements('node[type="term"]');
-		ediciones.addClass("edicion");
-		articulos.addClass("articulo");
-		terms.addClass("term");
-		cy.on("tap", "node", function(evt) {
-			let node = evt.target;
-			node.addClass("active");
-			if (node.data().link !== undefined) {
-				window.location.href = node.data().link;
-			}
-		});
-		cy.on("mouseover", "node", function(evt) {
-			cy.elements("node").removeClass("hover");
-			let node = evt.target;
-			node.addClass("hover");
-			let neighbors = cy
-				.elements("node#" + node.id())
-				.closedNeighborhood();
-			neighbors.addClass("hover");
-		});
-		cy.on("taphold", "node", function(evt) {
-			cy.elements("node").removeClass("hover");
-			let node = evt.target;
-			node.addClass("hover");
-			let neighbors = cy
-				.elements("node#" + node.id())
-				.closedNeighborhood();
-			neighbors.addClass("hover");
-		});
-		cy.on("mouseout", "node", function(evt) {
-			cy.elements("node, edge").removeClass("hover");
-		});
-		cy.on("tapend", "node", function(evt) {
-			cy.elements("node, edge").removeClass("hover");
-		});
-	}
 
 	activeNode(id) {
 		setState({ activeNode: id });
 	}
 
 	switchLayout(layout) {
-		console.log(layout);
 		this.setState({
 			curlayout: layout
 		});
-	}
-
-	handleEval() {
-		const cy = this.cy;
-		const str = this.text.value;
-		eval(str);
 	}
 
 	searchArticles(nodeid) {
@@ -485,6 +237,7 @@ class App extends Component {
 			<div className="taxswitcherlist">
 				{this.state.taxonomies.map(taxonomy => (
 					<div
+						key={taxonomy}
 						className={
 							this.state.curtax === taxonomy
 								? "tax active"
@@ -502,16 +255,13 @@ class App extends Component {
 				<Graph
 					containerID="cy"
 					data={this.state.curdata[this.state.curtax]["elements"]}
-					cyRef={cy => {
-						this.cyRef(cy);
-					}}
-					graphStyle={graphStyle}
 					layout={this.state.curlayout}
 				/>
 				<MediaQuery query="(min-device-width: 1024px)">
 					<LayoutSwitcher>
 						{Object.keys(layouts).map((layout, index) => (
 							<div
+								key={`layout-${index}`}
 								className={
 									this.state.curlayout.name ===
 									layouts[layout].name
@@ -528,9 +278,7 @@ class App extends Component {
 					</LayoutSwitcher>
 				</MediaQuery>
 				<Horizonte>
-					<TaxLabel>
-						<div className="label">{this.state.curtax}</div>
-					</TaxLabel>
+					<TaxLabel curtax={this.state.curtax} />
 					<MediaQuery query="(min-device-width: 1024px)">
 						<TaxSwitcherDesktop>{taxswitcher}</TaxSwitcherDesktop>
 					</MediaQuery>
