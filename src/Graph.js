@@ -42,7 +42,7 @@ class Graph extends Component {
 			cy.elements("node").removeClass("hover");
 			let node = event.target;
 			let nodeid = node.id();
-			
+
 			node.addClass("hover");
 			let neighbors = cy.elements("node#" + nodeid).closedNeighborhood();
 			neighbors.addClass("hover");
@@ -66,7 +66,6 @@ class Graph extends Component {
 
 		if (this.state.layoutChange === true) {
 			let layout = cy.layout(this.props.layout);
-			layout.run();
 			this.setState({ layoutChange: false });
 		}
 	};
@@ -85,7 +84,13 @@ class Graph extends Component {
 			articulos.addClass("articulo");
 			terms.addClass("term");
 			let layout = cy.layout(this.props.layout);
+			cy.zoom(this.props.layout.zoom);
 			layout.run();
+		}
+		if(this.props.zoom !== prevProps.zoom) {
+			this._cy = cy;
+			window.cy = cy;
+			cy.zoom(this.props.zoom);
 		}
 	}
 
@@ -95,14 +100,13 @@ class Graph extends Component {
 				containerID="cy"
 				elements={CytoscapeComponent.normalizeElements(this.props.data)}
 				cy={this.handleCy}
-				wheelSensitivity={0.2}
-				minZoom={0.7}
-				maxZoom={1.4}
+				minZoom={0.1}
+				maxZoom={2}
 				zoom={1}
 				layout={this.props.layout}
 				stylesheet={graphStyle}
-				zoomingEnabled={false}
-				userZoomingEnabled={true}
+				zoomingEnabled={true}
+				userZoomingEnabled={false}
 			/>
 		);
 	}

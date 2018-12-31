@@ -65,10 +65,12 @@ const graphStyle = [
 		style: {
 			"background-color": nodeColor,
 			"background-image": "data(img)",
+			"background-fit": "cover",
 			"border-width": "1px",
 			"border-color": nodeColor,
 			width: "32px",
-			height: "32px"
+			height: "48px",
+			shape: "rectangle"
 		}
 	},
 	{

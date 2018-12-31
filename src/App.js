@@ -11,7 +11,7 @@ import concentric from "./svg/concentric.svg";
 import cose from "./svg/cose.svg";
 import grid from "./svg/grid.svg";
 import random from "./svg/random.svg";
-import SVG from "react-inlinesvg"
+import SVG from "react-inlinesvg";
 
 const GraphWrapper = styled.div`
 	font-family: "Josefin Sans", sans-serif;
@@ -42,8 +42,31 @@ const GraphWrapper = styled.div`
 		width: 100%;
 		min-height: 600px;
 		z-index: 2;
+		margin-top: 24px;
 		@media screen and (max-width: 768px) {
 			height: 100vh;
+		}
+	}
+`;
+
+const ZoomSwitcher = styled.div`
+	font-size: 24px;
+	color: #333;
+	z-index: 10;
+	position: absolute;
+	left: 0;
+	top: 0;
+	span {
+		background-color:white;
+		padding: 0 6px;
+		text-align: center;
+		display: inline-block;
+		cursor: pointer;
+		margin-right: 6px;
+		width: 16px;
+		&:hover {
+			background-color: #000;
+			color: white;
 		}
 	}
 `;
@@ -54,11 +77,14 @@ const TaxSwitcherDesktop = styled.div`
 		top: 0;
 		left: 0;
 		z-index: 10;
+		width: 100%;
+		text-align: center;
 		.tax {
 			cursor: pointer;
 			color: white;
 			display: inline-block;
 			padding: 4px;
+			border-bottom: 1px solid white;
 		}
 		.active,
 		.tax:hover {
@@ -113,15 +139,17 @@ const LayoutSwitcher = styled.div`
 	top: 0;
 	right: 0;
 	color: white;
-	z-index: 4;
+	z-index: 10;
 	.switcher {
 		cursor: pointer;
 		display: inline-block;
-		padding: 6px;
+		padding: 8px;
 		background-color: #333;
 		margin: 6px;
 		border-radius: 50%;
-		&.active {
+		font-size: 10px;
+		line-height: 5px;
+		&.active, &:hover {
 			background-color: white;
 			color: #333;
 		}
@@ -150,7 +178,7 @@ const Menumobile = styled.div`
 		font-size: 32px;
 		display: block;
 		width: 60px;
-		padding: 3px 24px;
+		line-height: 60px;
 		display: block;
 		color: white;
 		font-family: "Josefin Sans";
@@ -178,7 +206,8 @@ class App extends Component {
 			curtax: "lugares",
 			articles: null,
 			curlayout: layouts.random,
-			mobileswitcher: false
+			mobileswitcher: false,
+			zoom: 1
 		};
 
 		this.switchTax = this.switchTax.bind(this);
@@ -237,6 +266,12 @@ class App extends Component {
 		});
 	}
 
+	zoomGraph(zoomFactor) {
+		this.setState({
+			zoom: this.state.zoom + zoomFactor
+		})
+	}
+
 	render() {
 		const taxswitcher = (
 			<div className="taxswitcherlist">
@@ -272,7 +307,29 @@ class App extends Component {
 					</TaxSwitcherMobile>
 				) : null}
 				<MediaQuery query="(min-device-width: 1024px)">
-					<TaxSwitcherDesktop>{taxswitcher}</TaxSwitcherDesktop>
+					<TaxSwitcherDesktop>
+						{taxswitcher}
+						<LayoutSwitcher>
+							{Object.keys(layouts).map((layout, index) => (
+								<div
+									key={`layout-${index}`}
+									className={
+										this.state.curlayout.name ===
+										layouts[layout].name
+											? "switcher active"
+											: "switcher"
+									}
+									onClick={() =>
+										this.switchLayout(layouts[layout])
+									}
+								>{index + 1}</div>
+							))}
+						</LayoutSwitcher>
+						<ZoomSwitcher>
+							<span className="zoomPlus" onClick={()=> this.zoomGraph(0.2)}>+</span>
+							<span className="zoomMinus" onClick={() => this.zoomGraph(-0.2)}>-</span>
+						</ZoomSwitcher>
+					</TaxSwitcherDesktop>
 				</MediaQuery>
 				<MediaQuery query="(max-width: 1023px)">
 					<Menumobile onClick={() => this.toggleTaxSwitch()}>
@@ -283,27 +340,8 @@ class App extends Component {
 					containerID="cy"
 					data={this.state.curdata[this.state.curtax]["elements"]}
 					layout={this.state.curlayout}
+					zoom={this.state.zoom}
 				/>
-				<MediaQuery query="(min-device-width: 1024px)">
-					<LayoutSwitcher>
-						{Object.keys(layouts).map((layout, index) => (
-							<div
-								key={`layout-${index}`}
-								className={
-									this.state.curlayout.name ===
-									layouts[layout].name
-										? "switcher active"
-										: "switcher"
-								}
-								onClick={() =>
-									this.switchLayout(layouts[layout])
-								}
-							>
-								
-							</div>
-						))}
-					</LayoutSwitcher>
-				</MediaQuery>
 				<Horizonte>
 					<TaxLabel curtax={this.state.curtax} />
 				</Horizonte>

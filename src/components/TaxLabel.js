@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledTaxLabel = styled.div`
 	position: absolute;
-	left: 12px;
+	left: 0;
 	bottom: 66px;
 	font-size: 48px;
 	z-index: 3;
@@ -16,7 +16,8 @@ const StyledTaxLabel = styled.div`
 	}
 	@media screen and (max-width: 768px) {
 		font-size: 18px;
-		bottom: 48px;
+		bottom: 90px;
+		left: 0;
 	}
 `;
 

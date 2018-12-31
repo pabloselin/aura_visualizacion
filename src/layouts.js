@@ -7,25 +7,25 @@ const layouts = {
 		circle: true,
 		padding: 10,
 		nodeDimensionsIncludeLabels: false,
-		animate: true,
-
+		animate: false,
+		zoom: 1
 	},
 	grid: {
 		name: "grid",
-		fit: true,
-		padding: 10,
+		fit: false,
+		padding: 30,
 		nodeDimensionsIncludeLabels: false,
-		animate: true,
-		zoom: 0.8
+		animate: false,
+		zoom: 1
 	},
 	breadthfirst: {
 		name: "breadthfirst",
-		fit: true,
+		fit: false,
 		circle: true,
 		padding: 10,
 		nodeDimensionsIncludeLabels: true,
-		animate: true,
-		zoom: 0.8
+		animate: false,
+		zoom: 1
 	},
 	cose: {
 		name: "cose",
@@ -33,8 +33,8 @@ const layouts = {
 		circle: true,
 		padding: 10,
 		nodeDimensionsIncludeLabels: true,
-		animate: true,
-		zoom: 0.8
+		animate: false,
+		zoom: 1
 	},
 	concentric: {
 		name: "concentric",
@@ -42,8 +42,8 @@ const layouts = {
 		circle: true,
 		padding: 10,
 		nodeDimensionsIncludeLabels: false,
-		animate: true,
-		zoom: 0.8
+		animate: false,
+		zoom: 0.9
 	}
 };
 
