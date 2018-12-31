@@ -15,7 +15,7 @@ const graphStyle = [
 			color: nodeColor,
 			"border-color": "#333",
 			"border-width": "1px",
-			"text-max-width": "260px",
+			"text-max-width": "200px",
 			"text-wrap": "wrap",
 			"text-background-color": "black",
 			"text-background-opacity": 1,
@@ -70,7 +70,11 @@ const graphStyle = [
 			"border-color": nodeColor,
 			width: "32px",
 			height: "48px",
-			shape: "rectangle"
+			shape: "rectangle",
+			"text-margin-y": "10px",
+			"text-valign": "bottom",
+			"text-background-color": "#fff",
+			"color": "#000"
 		}
 	},
 	{
@@ -86,7 +90,7 @@ const graphStyle = [
 			"text-wrap": "ellipsis",
 			"text-valign": "bottom",
 			"text-halign": "center",
-			"text-margin-y": "0"
+			"text-margin-y": "4px"
 		}
 	},
 	{
