@@ -6,19 +6,22 @@ import TaxLabel from "./components/TaxLabel";
 import styled from "styled-components";
 import config from "../config";
 import layouts from "./layouts";
+import Breadthfirst from "./svg/breadthfirst.svg";
+import concentric from "./svg/concentric.svg";
+import cose from "./svg/cose.svg";
+import grid from "./svg/grid.svg";
+import random from "./svg/random.svg";
+import SVG from "react-inlinesvg"
 
 const GraphWrapper = styled.div`
 	font-family: "Josefin Sans", sans-serif;
-	height: 100vh;
-	width: 100%;
 	overflow: hidden;
 	background-color: transparent;
-	background-image: url(https://auraaustral.cl/wp-content/uploads/2018/09/20160607_104046-1920x1080.jpg);
+	//background-image: url(https://auraaustral.cl/wp-content/uploads/2018/09/20160607_104046-1920x1080.jpg);
 	background-size: cover;
 	position: relative;
 	&:after {
 		content: "";
-		background: rgba(0, 0, 0, 0.9);
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -35,18 +38,22 @@ const GraphWrapper = styled.div`
 		z-index: 2;
 	}
 	.__________cytoscape_container {
-		height: 100vh;
+		height: 70vh;
 		width: 100%;
+		min-height: 600px;
 		z-index: 2;
+		@media screen and (max-width: 768px) {
+			height: 100vh;
+		}
 	}
 `;
 
 const TaxSwitcherDesktop = styled.div`
 	.taxswitcherlist {
 		position: absolute;
-		bottom: 60px;
-		right: 24px;
-		z-index: 2;
+		top: 0;
+		left: 0;
+		z-index: 10;
 		.tax {
 			cursor: pointer;
 			color: white;
@@ -103,8 +110,8 @@ const TaxSwitcherMobile = styled.div`
 
 const LayoutSwitcher = styled.div`
 	position: absolute;
-	bottom: 0;
-	left: 0;
+	top: 0;
+	right: 0;
 	color: white;
 	z-index: 4;
 	.switcher {
@@ -113,6 +120,7 @@ const LayoutSwitcher = styled.div`
 		padding: 6px;
 		background-color: #333;
 		margin: 6px;
+		border-radius: 50%;
 		&.active {
 			background-color: white;
 			color: #333;
@@ -122,20 +130,21 @@ const LayoutSwitcher = styled.div`
 
 const Horizonte = styled.div`
 	position: absolute;
-	bottom: -45px;
+	bottom: -95px;
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0.7);
 	border-top: 2px solid white;
 	border-radius: 50%;
-	height: 135px;
+	height: 175px;
 	z-index: 3;
 `;
 
 const Menumobile = styled.div`
 	text-align: center;
 	position: absolute;
-	bottom: 45px;
+	bottom: 0;
 	width: 100%;
+	z-index: 10;
 	span.plusSign {
 		margin: 0 auto;
 		font-size: 32px;
@@ -145,10 +154,7 @@ const Menumobile = styled.div`
 		display: block;
 		color: white;
 		font-family: "Josefin Sans";
-		border-width: 1px 1px 0 1px;
-		border-color: white;
-		border-style: solid;
-		border-radius: 6px 6px 0 0;
+		font-size: 96px;
 	}
 `;
 
@@ -205,7 +211,6 @@ class App extends Component {
 		this.setState({ mobileswitcher: !this.state.mobileswitcher });
 	}
 
-
 	activeNode(id) {
 		setState({ activeNode: id });
 	}
@@ -252,6 +257,28 @@ class App extends Component {
 		);
 		return this.state.data !== null ? (
 			<GraphWrapper>
+				{this.state.mobileswitcher === true ? (
+					<TaxSwitcherMobile>
+						<div className="wrapper">
+							{taxswitcher}{" "}
+							<p
+								className="closebtn"
+								onClick={() => this.toggleTaxSwitch()}
+							>
+								Cerrar
+							</p>
+							<p className="help" />
+						</div>
+					</TaxSwitcherMobile>
+				) : null}
+				<MediaQuery query="(min-device-width: 1024px)">
+					<TaxSwitcherDesktop>{taxswitcher}</TaxSwitcherDesktop>
+				</MediaQuery>
+				<MediaQuery query="(max-width: 1023px)">
+					<Menumobile onClick={() => this.toggleTaxSwitch()}>
+						<span className="plusSign">+</span>
+					</Menumobile>
+				</MediaQuery>
 				<Graph
 					containerID="cy"
 					data={this.state.curdata[this.state.curtax]["elements"]}
@@ -272,36 +299,14 @@ class App extends Component {
 									this.switchLayout(layouts[layout])
 								}
 							>
-								{layouts[layout].name}
+								
 							</div>
 						))}
 					</LayoutSwitcher>
 				</MediaQuery>
 				<Horizonte>
 					<TaxLabel curtax={this.state.curtax} />
-					<MediaQuery query="(min-device-width: 1024px)">
-						<TaxSwitcherDesktop>{taxswitcher}</TaxSwitcherDesktop>
-					</MediaQuery>
-					<MediaQuery query="(max-width: 1023px)">
-						<Menumobile onClick={() => this.toggleTaxSwitch()}>
-							<span className="plusSign">+</span>
-						</Menumobile>
-					</MediaQuery>
 				</Horizonte>
-				{this.state.mobileswitcher === true ? (
-					<TaxSwitcherMobile>
-						<div className="wrapper">
-							{taxswitcher}{" "}
-							<p
-								className="closebtn"
-								onClick={() => this.toggleTaxSwitch()}
-							>
-								Cerrar
-							</p>
-							<p className="help" />
-						</div>
-					</TaxSwitcherMobile>
-				) : null}
 			</GraphWrapper>
 		) : (
 			<div className="loading">Cargando</div>

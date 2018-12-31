@@ -29,19 +29,20 @@ class Graph extends Component {
 		articulos.addClass("articulo");
 		terms.addClass("term");
 
-		cy.on("tap", "node", function(evt) {
-			let node = evt.target;
+		cy.on("tap", "node", event => {
+			let node = event.target;
 			node.addClass("active");
-			if (node.data().link !== undefined) {
-				window.location.href = node.data().link;
-			}
+			// if (node.data().link !== undefined) {
+			// 	window.location.href = node.data().link;
+			// }
+			this.setState({ activeNode: node.data() });
 		});
 
 		cy.on("mouseover", "node", event => {
 			cy.elements("node").removeClass("hover");
 			let node = event.target;
 			let nodeid = node.id();
-			this.setState({ activeNode: node.data() });
+			
 			node.addClass("hover");
 			let neighbors = cy.elements("node#" + nodeid).closedNeighborhood();
 			neighbors.addClass("hover");

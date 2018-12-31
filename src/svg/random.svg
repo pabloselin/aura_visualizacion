@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg1874"
+   version="1.1"
+   viewBox="0 0 53.453903 53.453903"
+   height="53.453903mm"
+   width="53.453903mm">
+  <defs
+     id="defs1868" />
+  <metadata
+     id="metadata1871">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-75.32662,-164.43972)"
+     id="layer1">
+    <g
+       transform="translate(1.2929591,147.53818)"
+       id="g1146">
+      <rect
+         style="fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:1"
+         id="rect1122-4"
+         width="53.453903"
+         height="53.453903"
+         x="74.033661"
+         y="16.901537"
+         ry="0" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke-width:0.26458332"
+         id="path815-2"
+         cx="99.252472"
+         cy="39.03125"
+         r="3.4745038" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke-width:0.18543042"
+         id="path815-3-7"
+         cx="110.46355"
+         cy="54.055798"
+         r="2.4350693" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke-width:0.26458332"
+         id="path815-3-6-0"
+         cx="116.19396"
+         cy="38.275299"
+         r="3.4745038" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke-width:0.26458332"
+         id="path815-36"
+         cx="104.92211"
+         cy="62.654762"
+         r="3.4745038" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke-width:0.14225611"
+         id="path815-3-0"
+         cx="101.95908"
+         cy="49.142109"
+         r="1.8681049" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke-width:0.26458332"
+         id="path815-3-6-6"
+         cx="119.59574"
+         cy="49.992558"
+         r="3.4745038" />
+    </g>
+  </g>
+</svg>

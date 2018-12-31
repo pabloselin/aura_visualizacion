@@ -13,6 +13,8 @@ const graphStyle = [
 			height: "12px",
 			"font-size": "12px",
 			color: nodeColor,
+			"border-color": "#333",
+			"border-width": "1px",
 			"text-max-width": "260px",
 			"text-wrap": "wrap",
 			"text-background-color": "black",
@@ -78,7 +80,6 @@ const graphStyle = [
 	{
 		selector: "node.term",
 		style: {
-			label: "data(name)",
 			"text-max-width": "120px",
 			"text-wrap": "ellipsis",
 			"text-valign": "bottom",
@@ -89,6 +90,7 @@ const graphStyle = [
 	{
 		selector: "node.term.hover",
 		style: {
+			label: "data(name)",
 			"border-width": "1px",
 			"border-color": nodeColor,
 			"text-wrap": "none"

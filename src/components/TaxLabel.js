@@ -4,8 +4,8 @@ import styled from "styled-components";
 const StyledTaxLabel = styled.div`
 	position: absolute;
 	left: 12px;
-	bottom: 36px;
-	font-size: 60px;
+	bottom: 66px;
+	font-size: 48px;
 	z-index: 3;
 	text-align: center;
 	.label {
