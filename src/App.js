@@ -42,7 +42,7 @@ const GraphWrapper = styled.div`
 		width: 100%;
 		min-height: 600px;
 		z-index: 2;
-		margin-top: 24px;
+		margin-top: 42px;
 		@media screen and (max-width: 768px) {
 			height: 100vh;
 		}
@@ -63,7 +63,8 @@ const ZoomSwitcher = styled.div`
 		display: inline-block;
 		cursor: pointer;
 		margin-right: 6px;
-		width: 16px;
+		width: 24px;
+		line-height: 26px;
 		&:hover {
 			background-color: #000;
 			color: white;
@@ -326,8 +327,8 @@ class App extends Component {
 							))}
 						</LayoutSwitcher>
 						<ZoomSwitcher>
-							<span className="zoomPlus" onClick={()=> this.zoomGraph(0.2)}>+</span>
-							<span className="zoomMinus" onClick={() => this.zoomGraph(-0.2)}>-</span>
+							<span className="zoomPlus" onClick={()=> this.zoomGraph(0.1)}>+</span>
+							<span className="zoomMinus" onClick={() => this.zoomGraph(-0.1)}>-</span>
 						</ZoomSwitcher>
 					</TaxSwitcherDesktop>
 				</MediaQuery>
