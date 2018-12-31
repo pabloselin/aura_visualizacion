@@ -269,7 +269,7 @@ class App extends Component {
 
 	zoomGraph(zoomFactor) {
 		this.setState({
-			zoom: this.state.zoom + zoomFactor
+			zoom: this.state.zoom >= 0 ? this.state.zoom + zoomFactor : this.state.zoom
 		})
 	}
 

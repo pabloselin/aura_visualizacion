@@ -41,7 +41,7 @@ const graphStyle = [
 	{
 		selector: "edge.hover",
 		style: {
-			width: "0.5px",
+			width: "1px",
 			"line-style": "dashed",
 			color: nodeColor
 		}
@@ -80,7 +80,8 @@ const graphStyle = [
 	{
 		selector: "node.articulo.hover",
 		style: {
-			label: "data(name)"
+			label: "data(name)",
+			"z-compound-depth": "top"
 		}
 	},
 	{

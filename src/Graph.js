@@ -85,6 +85,7 @@ class Graph extends Component {
 			terms.addClass("term");
 			let layout = cy.layout(this.props.layout);
 			cy.zoom(this.props.layout.zoom);
+			cy.center();
 			layout.run();
 		}
 		if(this.props.zoom !== prevProps.zoom) {
@@ -100,7 +101,7 @@ class Graph extends Component {
 				containerID="cy"
 				elements={CytoscapeComponent.normalizeElements(this.props.data)}
 				cy={this.handleCy}
-				minZoom={0.1}
+				minZoom={0.5}
 				maxZoom={2}
 				zoom={1}
 				layout={this.props.layout}
