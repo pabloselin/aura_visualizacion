@@ -18,9 +18,10 @@ const GraphWrapper = styled.div`
 	font-family: "Josefin Sans", sans-serif;
 	overflow: hidden;
 	background-color: transparent;
-	//background-image: url(https://auraaustral.cl/wp-content/uploads/2018/09/20160607_104046-1920x1080.jpg);
 	background-size: cover;
 	position: relative;
+	height: 100%;
+	max-height: 100vh;
 	&:after {
 		content: "";
 		position: absolute;
@@ -37,6 +38,7 @@ const GraphWrapper = styled.div`
 		top: 0;
 		left: 0;
 		z-index: 2;
+		overflow: hidden;
 	}
 	.__________cytoscape_container {
 		height: 70vh;
@@ -103,7 +105,7 @@ const TaxSwitcherMobile = styled.div`
 			width: 100%;
 			height: 100vh;
 			position: absolute;
-			z-index: 10;
+			z-index: 12;
 			background-color: rgba(0, 0, 0, 0.6);
 			top: 0;
 			.taxswitcherlist {
@@ -177,16 +179,25 @@ const Menumobile = styled.div`
 	bottom: 0;
 	width: 100%;
 	z-index: 10;
+	display: flex;
+	justify-content: center;
 	span.plusSign {
-		margin: 0 auto;
-		font-size: 32px;
 		display: block;
 		width: 60px;
 		line-height: 60px;
 		display: block;
 		color: white;
 		font-family: "Josefin Sans";
-		font-size: 96px;
+		font-size: 54px;
+	}
+	span.info {
+		font-size: 36px;
+		width: 60px;
+		line-height: 67px;
+		display: block;
+		color: white;
+		font-weight: bold;
+		font-family: "Josefin Sans";
 	}
 `;
 
@@ -336,7 +347,7 @@ class App extends Component {
 									className="closebtn"
 									onClick={() => this.toggleTaxSwitch()}
 								>
-									Cerrar
+									x [cerrar]
 								</p>
 								<p className="help" />
 							</div>
@@ -386,8 +397,16 @@ class App extends Component {
 						</TaxSwitcherDesktop>
 					</MediaQuery>
 					<MediaQuery query="(max-width: 1023px)">
-						<Menumobile onClick={() => this.toggleTaxSwitch()}>
-							<span className="plusSign">+</span>
+						<Menumobile>
+							<span
+								className="plusSign"
+								onClick={() => this.toggleTaxSwitch()}
+							>
+								+
+							</span>
+							<span className="info" onClick={this.toggleTermNav}>
+								i
+							</span>
 						</Menumobile>
 					</MediaQuery>
 					<Graph
@@ -398,9 +417,6 @@ class App extends Component {
 					/>
 					<Horizonte>
 						<TaxLabel curtax={this.state.curtax} />
-						{this.state.activeNode && (
-							<div>{this.state.activeNode.name}</div>
-						)}
 					</Horizonte>
 					<TermNav
 						active={this.state.toggleTermNav}
@@ -408,6 +424,7 @@ class App extends Component {
 						terms={this.state.terms}
 						articles={this.state.articles}
 						edges={this.state.edges}
+						toggleTermNav={this.toggleTermNav}
 					/>
 				</GraphWrapper>
 			</div>

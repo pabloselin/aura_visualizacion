@@ -8,7 +8,7 @@ const TermNavElement = styled.div`
 	top: 52px;
 	width: 50%;
 	overflow: hidden;
-	z-index: 100;
+	z-index: 8;
 	max-height: 90%;
 	height: 90%;
 	background-color: rgba(0, 0, 0, 0.8);
@@ -22,6 +22,7 @@ const TermNavElement = styled.div`
 		left: 0;
 		transition: all ease-out 0.3s;
 		opacity: 1;
+		z-index: 12;
 	}
 
 	div.articles,
@@ -91,6 +92,14 @@ const TermNavElement = styled.div`
 		color: white;
 		text-decoration: none;
 	}
+
+	@media screen and (max-width:768px) {
+		width: 100%;
+		top: 0;
+		left: -100%;
+		height: 100%;
+		max-height: 100%;
+	}
 `;
 
 const Input = styled.input`
@@ -100,6 +109,19 @@ const Input = styled.input`
 	border: 1px solid #ccc;
 	font-size: 14px;
 	direction: ltr;
+	max-width: 100%;
+	@media screen and (max-width: 768px) {
+		max-width: 70%;
+	}
+`;
+
+const CloseTermNav = styled.span`
+	display: block;
+	position: absolute;
+	bottom: 12px;
+	right: 12px;
+	border: 1px solid white;
+	padding: 6px;
 `;
 
 class TermNav extends React.Component {
@@ -219,6 +241,9 @@ class TermNav extends React.Component {
 								</li>
 							)}
 						</ul>
+						<CloseTermNav onClick={this.props.toggleTermNav}>
+							X [cerrar]
+						</CloseTermNav>
 					</div>
 				</TermNavElement>
 			</div>

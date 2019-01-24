@@ -3,11 +3,14 @@ import styled from "styled-components";
 
 const StyledTaxLabel = styled.div`
 	position: absolute;
-	left: 0;
+	left: 12px;
 	bottom: 66px;
 	font-size: 48px;
 	z-index: 3;
 	text-align: center;
+	opacity: 0.5;
+	cursor: crosshair;
+	user-select: none;
 	.label {
 		color: white;
 		text-transform: uppercase;

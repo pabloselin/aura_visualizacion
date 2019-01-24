@@ -122,9 +122,6 @@ class Graph extends Component {
 					zoomingEnabled={true}
 					userZoomingEnabled={false}
 				/>
-				{this.state.activeNode && (
-					<div>{this.state.activeNode.name}</div>
-				)}
 			</div>
 		);
 	}
