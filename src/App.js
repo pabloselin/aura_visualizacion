@@ -3,6 +3,7 @@ import axios from "axios";
 import MediaQuery from "react-responsive";
 import Graph from "./Graph";
 import TaxLabel from "./components/TaxLabel";
+import TermNav from "./components/TermNav";
 import styled from "styled-components";
 import config from "../config";
 import layouts from "./layouts";
@@ -43,6 +44,7 @@ const GraphWrapper = styled.div`
 		min-height: 600px;
 		z-index: 2;
 		margin-top: 42px;
+		cursor: crosshair;
 		@media screen and (max-width: 768px) {
 			height: 100vh;
 		}
@@ -57,7 +59,7 @@ const ZoomSwitcher = styled.div`
 	left: 0;
 	top: 0;
 	span {
-		background-color:white;
+		background-color: white;
 		padding: 0 6px;
 		text-align: center;
 		display: inline-block;
@@ -150,7 +152,8 @@ const LayoutSwitcher = styled.div`
 		border-radius: 50%;
 		font-size: 10px;
 		line-height: 5px;
-		&.active, &:hover {
+		&.active,
+		&:hover {
 			background-color: white;
 			color: #333;
 		}
@@ -208,10 +211,14 @@ class App extends Component {
 			articles: null,
 			curlayout: layouts.random,
 			mobileswitcher: false,
-			zoom: 1
+			zoom: 1,
+			navActive: false,
+			toggleTermNav: false
 		};
 
 		this.switchTax = this.switchTax.bind(this);
+		this.toggleTermNav = this.toggleTermNav.bind(this);
+		//this.handleTerm = this.handleTerm.bind(this);
 	}
 
 	componentDidMount() {
@@ -230,11 +237,17 @@ class App extends Component {
 				data: response.data,
 				curdata: response.data[this.props.edicion]
 			});
+			this.buildTermList(this.state.curtax);
 		});
 	}
 
 	switchTax(taxonomy) {
 		this.setState({ curtax: taxonomy, mobileswitcher: false });
+		this.buildTermList(taxonomy);
+	}
+
+	toggleTermNav() {
+		this.setState({ toggleTermNav: !this.state.toggleTermNav });
 	}
 
 	toggleTaxSwitch() {
@@ -269,8 +282,29 @@ class App extends Component {
 
 	zoomGraph(zoomFactor) {
 		this.setState({
-			zoom: this.state.zoom >= 0 ? this.state.zoom + zoomFactor : this.state.zoom
-		})
+			zoom:
+				this.state.zoom >= 0
+					? this.state.zoom + zoomFactor
+					: this.state.zoom
+		});
+	}
+
+	buildTermList(taxonomy) {
+		let terms = [];
+		let articles = [];
+		let edges = [];
+		{
+			this.state.curdata[taxonomy]["elements"].map(term => {
+				if (term.data.type === "term") {
+					terms.push(term.data);
+				} else if (term.data.type === "articulo") {
+					articles.push(term.data);
+				} else if (term.group === "edges") {
+					edges.push(term.data);
+				}
+			});
+		}
+		this.setState({ terms, articles, edges });
 	}
 
 	render() {
@@ -292,61 +326,91 @@ class App extends Component {
 			</div>
 		);
 		return this.state.data !== null ? (
-			<GraphWrapper>
-				{this.state.mobileswitcher === true ? (
-					<TaxSwitcherMobile>
-						<div className="wrapper">
-							{taxswitcher}{" "}
-							<p
-								className="closebtn"
-								onClick={() => this.toggleTaxSwitch()}
-							>
-								Cerrar
-							</p>
-							<p className="help" />
-						</div>
-					</TaxSwitcherMobile>
-				) : null}
-				<MediaQuery query="(min-device-width: 1024px)">
-					<TaxSwitcherDesktop>
-						{taxswitcher}
-						<LayoutSwitcher>
-							{Object.keys(layouts).map((layout, index) => (
-								<div
-									key={`layout-${index}`}
-									className={
-										this.state.curlayout.name ===
-										layouts[layout].name
-											? "switcher active"
-											: "switcher"
-									}
-									onClick={() =>
-										this.switchLayout(layouts[layout])
-									}
-								>{index + 1}</div>
-							))}
-						</LayoutSwitcher>
-						<ZoomSwitcher>
-							<span className="zoomPlus" onClick={()=> this.zoomGraph(0.1)}>+</span>
-							<span className="zoomMinus" onClick={() => this.zoomGraph(-0.1)}>-</span>
-						</ZoomSwitcher>
-					</TaxSwitcherDesktop>
-				</MediaQuery>
-				<MediaQuery query="(max-width: 1023px)">
-					<Menumobile onClick={() => this.toggleTaxSwitch()}>
-						<span className="plusSign">+</span>
-					</Menumobile>
-				</MediaQuery>
-				<Graph
-					containerID="cy"
-					data={this.state.curdata[this.state.curtax]["elements"]}
-					layout={this.state.curlayout}
-					zoom={this.state.zoom}
-				/>
-				<Horizonte>
-					<TaxLabel curtax={this.state.curtax} />
-				</Horizonte>
-			</GraphWrapper>
+			<div>
+				<GraphWrapper>
+					{this.state.mobileswitcher === true ? (
+						<TaxSwitcherMobile>
+							<div className="wrapper">
+								{taxswitcher}{" "}
+								<p
+									className="closebtn"
+									onClick={() => this.toggleTaxSwitch()}
+								>
+									Cerrar
+								</p>
+								<p className="help" />
+							</div>
+						</TaxSwitcherMobile>
+					) : null}
+					<MediaQuery query="(min-device-width: 1024px)">
+						<TaxSwitcherDesktop>
+							{taxswitcher}
+							<LayoutSwitcher>
+								{Object.keys(layouts).map((layout, index) => (
+									<div
+										key={`layout-${index}`}
+										className={
+											this.state.curlayout.name ===
+											layouts[layout].name
+												? "switcher active"
+												: "switcher"
+										}
+										onClick={() =>
+											this.switchLayout(layouts[layout])
+										}
+									>
+										{index + 1}
+									</div>
+								))}
+							</LayoutSwitcher>
+							<ZoomSwitcher>
+								<span
+									className="info"
+									onClick={this.toggleTermNav}
+								>
+									i
+								</span>
+								<span
+									className="zoomPlus"
+									onClick={() => this.zoomGraph(0.1)}
+								>
+									+
+								</span>
+								<span
+									className="zoomMinus"
+									onClick={() => this.zoomGraph(-0.1)}
+								>
+									-
+								</span>
+							</ZoomSwitcher>
+						</TaxSwitcherDesktop>
+					</MediaQuery>
+					<MediaQuery query="(max-width: 1023px)">
+						<Menumobile onClick={() => this.toggleTaxSwitch()}>
+							<span className="plusSign">+</span>
+						</Menumobile>
+					</MediaQuery>
+					<Graph
+						containerID="cy"
+						data={this.state.curdata[this.state.curtax]["elements"]}
+						layout={this.state.curlayout}
+						zoom={this.state.zoom}
+					/>
+					<Horizonte>
+						<TaxLabel curtax={this.state.curtax} />
+						{this.state.activeNode && (
+							<div>{this.state.activeNode.name}</div>
+						)}
+					</Horizonte>
+					<TermNav
+						active={this.state.toggleTermNav}
+						curtax={this.state.curtax}
+						terms={this.state.terms}
+						articles={this.state.articles}
+						edges={this.state.edges}
+					/>
+				</GraphWrapper>
+			</div>
 		) : (
 			<div className="loading">Cargando</div>
 		);

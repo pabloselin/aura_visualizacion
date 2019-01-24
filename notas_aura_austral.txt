@@ -1,0 +1,20 @@
+
+
+- La propuesta visual le parece bien
+- Transparentar como aparecen los conceptos
+- Que se puedan buscar los términos individualmente
+- Desplegadas todas las taxonomías
+- Que queden marcados los conceptos (queden seleccionados) y se puede ir saltando de un punto a otro punto
+- Se pondrían todas las taxonomías
+- Un gran mapa de todo el contenido
+- Visualización nº1 es más exploratorio
+- Visualización nº2 es más ordenado
+- Visualización nº3 es poco clara
+- Visualización nº4 es también poco organizada
+- Visualización nº5 
+- Indicar que se pueden arrastrar los botoncitos
+- 5 tiene límite de zoom-out
+- Se quedarían solo el 1 y el 2
+- Hay cosas de interfaz que no son tan intuitivas
+- Mapa completo de todos los artículos y señalar a qué pertenece cada uno.
+	- Ponerlo en ediciones

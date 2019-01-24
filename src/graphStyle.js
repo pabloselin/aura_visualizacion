@@ -26,10 +26,18 @@ const graphStyle = [
 		}
 	},
 	{
+		selector: "node#cursor",
+		style: {
+			"background-color": "red",
+			width: "12px",
+			height: "12px",
+			color: "red"
+		}
+	},
+	{
 		selector: "edge",
 		style: {
 			width: "0",
-			color: "rgba(255,255,255, 0.6)",
 			"line-style": "dashed",
 			"line-color": nodeColor,
 			"line-dash-pattern": [6, 10],
@@ -43,6 +51,14 @@ const graphStyle = [
 		style: {
 			width: "1px",
 			"line-style": "dashed",
+			"line-color": "rgba(200,200,200, 0.2)"
+		}
+	},
+	{
+		selector: "edge.active",
+		style: {
+			width: "1.5px",
+			"line-style": "dashed",
 			color: nodeColor
 		}
 	},
@@ -54,7 +70,7 @@ const graphStyle = [
 		}
 	},
 	{
-		selector: "node.hover",
+		selector: "node.hover, node.active",
 		style: {
 			"background-color": "#333",
 			"border-color": nodeColor
@@ -74,11 +90,11 @@ const graphStyle = [
 			"text-margin-y": "10px",
 			"text-valign": "bottom",
 			"text-background-color": "#fff",
-			"color": "#000"
+			color: "#000"
 		}
 	},
 	{
-		selector: "node.articulo.hover",
+		selector: "node.articulo.hover, node.articulo.active",
 		style: {
 			label: "data(name)",
 			"z-compound-depth": "top"
@@ -95,7 +111,7 @@ const graphStyle = [
 		}
 	},
 	{
-		selector: "node.term.hover",
+		selector: "node.term.hover, node.term.active",
 		style: {
 			label: "data(name)",
 			"border-width": "1px",

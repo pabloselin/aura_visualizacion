@@ -18,33 +18,33 @@ const layouts = {
 		animate: false,
 		zoom: 1
 	},
-	breadthfirst: {
-		name: "breadthfirst",
-		fit: false,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: true,
-		animate: false,
-		zoom: 1
-	},
-	cose: {
-		name: "cose",
-		fit: true,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: true,
-		animate: false,
-		zoom: 1
-	},
-	concentric: {
-		name: "concentric",
-		fit: true,
-		circle: true,
-		padding: 10,
-		nodeDimensionsIncludeLabels: false,
-		animate: false,
-		zoom: 0.9
-	}
+	// breadthfirst: {
+	// 	name: "breadthfirst",
+	// 	fit: false,
+	// 	circle: true,
+	// 	padding: 10,
+	// 	nodeDimensionsIncludeLabels: true,
+	// 	animate: false,
+	// 	zoom: 1
+	// },
+	// cose: {
+	// 	name: "cose",
+	// 	fit: true,
+	// 	circle: true,
+	// 	padding: 10,
+	// 	nodeDimensionsIncludeLabels: true,
+	// 	animate: false,
+	// 	zoom: 1
+	// },
+	// concentric: {
+	// 	name: "concentric",
+	// 	fit: true,
+	// 	circle: true,
+	// 	padding: 10,
+	// 	nodeDimensionsIncludeLabels: false,
+	// 	animate: false,
+	// 	zoom: 0.9
+	// }
 };
 
 export default layouts;

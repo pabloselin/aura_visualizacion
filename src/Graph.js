@@ -31,11 +31,21 @@ class Graph extends Component {
 
 		cy.on("tap", "node", event => {
 			let node = event.target;
-			node.addClass("active");
-			// if (node.data().link !== undefined) {
-			// 	window.location.href = node.data().link;
-			// }
-			this.setState({ activeNode: node.data() });
+			let nodeid = node.id();
+			cy.elements("node").removeClass("active");
+			if (node.hasClass("active")) {
+				//node.removeClass("active");
+				cy.elements("node, edge").removeClass("active");
+				this.setState({ activeNode: null });
+			} else {
+				cy.elements("node, edge").removeClass("active");
+				node.addClass("active");
+				let neighbors = cy
+					.elements("node#" + nodeid)
+					.closedNeighborhood();
+				neighbors.addClass("active");
+				this.setState({ activeNode: node.data() });
+			}
 		});
 
 		cy.on("mouseover", "node", event => {
@@ -88,7 +98,7 @@ class Graph extends Component {
 			cy.center();
 			layout.run();
 		}
-		if(this.props.zoom !== prevProps.zoom) {
+		if (this.props.zoom !== prevProps.zoom) {
 			this._cy = cy;
 			window.cy = cy;
 			cy.zoom(this.props.zoom);
@@ -97,18 +107,25 @@ class Graph extends Component {
 
 	render() {
 		return (
-			<CytoscapeComponent
-				containerID="cy"
-				elements={CytoscapeComponent.normalizeElements(this.props.data)}
-				cy={this.handleCy}
-				minZoom={0.5}
-				maxZoom={2}
-				zoom={1}
-				layout={this.props.layout}
-				stylesheet={graphStyle}
-				zoomingEnabled={true}
-				userZoomingEnabled={false}
-			/>
+			<div>
+				<CytoscapeComponent
+					containerID="cy"
+					elements={CytoscapeComponent.normalizeElements(
+						this.props.data
+					)}
+					cy={this.handleCy}
+					minZoom={0.5}
+					maxZoom={2}
+					zoom={1}
+					layout={this.props.layout}
+					stylesheet={graphStyle}
+					zoomingEnabled={true}
+					userZoomingEnabled={false}
+				/>
+				{this.state.activeNode && (
+					<div>{this.state.activeNode.name}</div>
+				)}
+			</div>
 		);
 	}
 }
