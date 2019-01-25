@@ -233,7 +233,28 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		this.getData();
+		let isglobal = this.props.isglobal == "true";
+		if (isglobal === true) {
+			this.getDataGlobal();
+		} else {
+			this.getData();
+		}
+	}
+
+	getDataGlobal() {
+		let url;
+		if (process.env.NODE_ENV === "production") {
+			url = `${this.props.url}/${config.production.api_url}globaltaxtree`;
+		} else {
+			url = `${this.props.url}/${config.dev.api_url}globaltaxtree`;
+		}
+		axios.get(url).then(response => {
+			this.setState({
+				data: response.data,
+				curdata: response.data
+			});
+			this.buildTermList(this.state.curtax);
+		});
 	}
 
 	getData() {

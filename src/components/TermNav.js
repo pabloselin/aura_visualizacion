@@ -31,6 +31,8 @@ const TermNavElement = styled.div`
 
 	div.articles {
 		width: 60%;
+		overflow-y: auto;
+		padding-bottom: 40px;
 		ul {
 			margin: 24px 12px 12px 0;
 			padding: 0;
@@ -60,7 +62,9 @@ const TermNavElement = styled.div`
 	div.terms li {
 		direction: ltr;
 		padding-right: 12px;
+		padding-left: 12px;
 		padding-bottom: 6px;
+		text-align:right;
 	}
 
 	li {
@@ -81,12 +85,20 @@ const TermNavElement = styled.div`
 		border-color: white;
 		border-width: 1px 1px 1px 0;
 		margin: 12px 0;
+		font-family: 'Josefin Sans', sans-serif;
 	}
 	h3 {
+		font-weight: normal;
+		font-size: 18px;
+		font-family: 'Josefin Sans', sans-serif;
+	}
+	h2 {
+		font-family: 'Josefin Sans', sans-serif;
 		font-weight: normal;
 	}
 	img {
 		max-width: 100%;
+		margin-bottom: 12px;
 	}
 	a {
 		color: white;
@@ -119,9 +131,11 @@ const CloseTermNav = styled.span`
 	display: block;
 	position: absolute;
 	bottom: 12px;
-	right: 12px;
+	right: 24px;
 	border: 1px solid white;
 	padding: 6px;
+	cursor: pointer;
+	background-color: #000;
 `;
 
 class TermNav extends React.Component {
@@ -155,6 +169,16 @@ class TermNav extends React.Component {
 		});
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.curtax !== this.props.curtax) {
+			this.setState({
+				filteredTerms: null,
+				filteredArticles: 0,
+				searchfield: ""
+			});
+		}
+	}
+
 	handleSearch(evt) {
 		console.log(evt.target.value);
 		let value = evt.target.value;
@@ -176,7 +200,9 @@ class TermNav extends React.Component {
 							<ul>
 								<Input
 									onChange={this.handleSearch.bind(this)}
-									placeholder="Buscar..."
+									placeholder={`Buscar ${
+										this.props.curtax
+									} ...`}
 									value={this.state.searchfield}
 								/>
 								{this.state.filteredTerms !== null
@@ -188,7 +214,7 @@ class TermNav extends React.Component {
 														"active"} termtree`}
 													onClick={this.handleTerm.bind(
 														this,
-														term.id
+														term
 													)}
 													key={key}
 												>
@@ -225,7 +251,9 @@ class TermNav extends React.Component {
 										<li className="article" key={key}>
 											<a href={article.link}>
 												<img
-													src={article.img}
+													src={article.img[0]}
+													width={article.img[1]}
+													height={article.img[2]}
 													alt={article.title}
 												/>
 												<h3>{article.name}</h3>
