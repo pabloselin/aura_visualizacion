@@ -19,6 +19,7 @@ const GraphWrapper = styled.div`
 	overflow: hidden;
 	background-color: transparent;
 	background-size: cover;
+	text-align: left;
 	position: relative;
 	height: 100%;
 	max-height: 100vh;
@@ -199,6 +200,14 @@ const Menumobile = styled.div`
 		font-weight: bold;
 		font-family: "Josefin Sans";
 	}
+`;
+
+const Loading = styled.div`
+	padding: 45px;
+	color: white;
+	font-size: 32px;
+	text-align: center;
+	font-family: 'Josefin Sans', sans-serif;
 `;
 
 class App extends Component {
@@ -450,7 +459,7 @@ class App extends Component {
 				</GraphWrapper>
 			</div>
 		) : (
-			<div className="loading">Cargando</div>
+			<Loading>Cargando</Loading>
 		);
 	}
 }

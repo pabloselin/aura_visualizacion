@@ -24,6 +24,8 @@ class Graph extends Component {
 
 		let articulos = cy.elements('node[type="articulo"]');
 		let ediciones = cy.elements('node[type="edicion"]');
+		let edges = cy.elements('edge');
+		console.log(edges);
 		let terms = cy.elements('node[type="term"]');
 		ediciones.addClass("edicion");
 		articulos.addClass("articulo");
